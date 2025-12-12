@@ -12,11 +12,6 @@ const DataTable = ({
     serverSide = false,
     onServerRequest // (params) => void
 }) => {
-    // Only use local state if not serverSide, otherwise use props or trigger requests
-    // Actually, local state can still drive the UI, but effect triggers callback
-
-    // We should initialize state from meta if provided?
-    // Let's keep local state for inputs, but trigger callbacks.
 
     const [searchTerm, setSearchTerm] = useState('');
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });

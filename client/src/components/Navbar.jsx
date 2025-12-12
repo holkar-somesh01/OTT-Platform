@@ -72,51 +72,53 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
                     </button>
 
                     {/* Notifications */}
-                    <div className="relative hidden sm:block">
-                        <button
-                            className={`${iconClass} transition-colors relative`}
-                            onClick={() => setNotificationsOpen(!notificationsOpen)}
-                        >
-                            <Bell size={20} />
-                            {unreadCount > 0 && (
-                                <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                                </span>
-                            )}
-                        </button>
+                    {user && (
+                        <div className="relative hidden sm:block">
+                            <button
+                                className={`${iconClass} transition-colors relative`}
+                                onClick={() => setNotificationsOpen(!notificationsOpen)}
+                            >
+                                <Bell size={20} />
+                                {unreadCount > 0 && (
+                                    <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                                    </span>
+                                )}
+                            </button>
 
-                        {/* Notifications Dropdown */}
-                        {notificationsOpen && (
-                            <div className="absolute right-0 top-full mt-2 w-80 bg-secondary border border-border rounded-xl shadow-2xl overflow-hidden max-h-[400px] flex flex-col">
-                                <div className="p-3 border-b border-border flex justify-between items-center bg-secondary sticky top-0 z-10">
-                                    <h3 className="font-bold text-primary-text">Notifications</h3>
-                                    {unreadCount > 0 && <span className="text-xs bg-accent px-2 py-0.5 rounded-full text-white">{unreadCount} new</span>}
-                                </div>
-                                <div className="overflow-y-auto flex-1">
-                                    {notifications.length === 0 ? (
-                                        <div className="p-8 text-center text-text-secondary">
-                                            <p>No notifications yet</p>
-                                        </div>
-                                    ) : (
-                                        notifications.map(notification => (
-                                            <div
-                                                key={notification.id}
-                                                className={`p-3 border-b border-border hover:bg-hover cursor-pointer transition-colors ${!notification.isRead ? 'bg-accent/5' : ''}`}
-                                                onClick={() => handleNotificationClick(notification.id)}
-                                            >
-                                                <div className="flex justify-between items-start mb-1">
-                                                    <h4 className={`text-sm font-semibold ${!notification.isRead ? 'text-accent' : 'text-primary-text'}`}>{notification.title}</h4>
-                                                    <span className="text-[10px] text-text-secondary">{new Date(notification.createdAt).toLocaleDateString()}</span>
-                                                </div>
-                                                <p className="text-xs text-text-secondary line-clamp-2">{notification.message}</p>
+                            {/* Notifications Dropdown */}
+                            {notificationsOpen && (
+                                <div className="absolute right-0 top-full mt-2 w-80 bg-secondary border border-border rounded-xl shadow-2xl overflow-hidden max-h-[400px] flex flex-col">
+                                    <div className="p-3 border-b border-border flex justify-between items-center bg-secondary sticky top-0 z-10">
+                                        <h3 className="font-bold text-primary-text">Notifications</h3>
+                                        {unreadCount > 0 && <span className="text-xs bg-accent px-2 py-0.5 rounded-full text-white">{unreadCount} new</span>}
+                                    </div>
+                                    <div className="overflow-y-auto flex-1">
+                                        {notifications.length === 0 ? (
+                                            <div className="p-8 text-center text-text-secondary">
+                                                <p>No notifications yet</p>
                                             </div>
-                                        ))
-                                    )}
+                                        ) : (
+                                            notifications.map(notification => (
+                                                <div
+                                                    key={notification.id}
+                                                    className={`p-3 border-b border-border hover:bg-hover cursor-pointer transition-colors ${!notification.isRead ? 'bg-accent/5' : ''}`}
+                                                    onClick={() => handleNotificationClick(notification.id)}
+                                                >
+                                                    <div className="flex justify-between items-start mb-1">
+                                                        <h4 className={`text-sm font-semibold ${!notification.isRead ? 'text-accent' : 'text-primary-text'}`}>{notification.title}</h4>
+                                                        <span className="text-[10px] text-text-secondary">{new Date(notification.createdAt).toLocaleDateString()}</span>
+                                                    </div>
+                                                    <p className="text-xs text-text-secondary line-clamp-2">{notification.message}</p>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
-                    </div>
+                            )}
+                        </div>
+                    )}
 
                     <button
                         onClick={toggleTheme}
@@ -127,23 +129,29 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
                     </button>
 
                     {/* User Profile Dropdown (Desktop) */}
-                    <div className="group relative hidden sm:block">
-                        <div className="flex items-center gap-2 cursor-pointer">
-                            <div className="w-8 h-8 rounded bg-accent flex items-center justify-center font-bold text-white">
-                                {user?.name?.[0]?.toUpperCase() || 'U'}
+                    {user ? (
+                        <div className="group relative hidden sm:block">
+                            <div className="flex items-center gap-2 cursor-pointer">
+                                <div className="w-8 h-8 rounded bg-accent flex items-center justify-center font-bold text-white">
+                                    {user?.name?.[0]?.toUpperCase() || 'U'}
+                                </div>
                             </div>
-                        </div>
 
-                        {/* Dropdown */}
-                        <div className="absolute right-0 top-full mt-2 w-48 bg-secondary border border-border rounded shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                            <div className="py-2 flex flex-col">
-                                <NavLink to="/profile" className="px-4 py-2 hover:bg-hover text-sm text-text-secondary hover:text-primary-text">Account</NavLink>
-                                <button onClick={handleLogout} className="px-4 py-2 text-left hover:bg-hover text-sm text-text-secondary hover:text-primary-text flex items-center gap-2">
-                                    Logout
-                                </button>
+                            {/* Dropdown */}
+                            <div className="absolute right-0 top-full mt-2 w-48 bg-secondary border border-border rounded shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                <div className="py-2 flex flex-col">
+                                    <NavLink to="/profile" className="px-4 py-2 hover:bg-hover text-sm text-text-secondary hover:text-primary-text">Account</NavLink>
+                                    <button onClick={handleLogout} className="px-4 py-2 text-left hover:bg-hover text-sm text-text-secondary hover:text-primary-text flex items-center gap-2">
+                                        Logout
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    ) : (
+                        <NavLink to="/login" className="hidden sm:block bg-accent hover:bg-accent-hover text-white px-4 py-1.5 rounded text-sm font-medium transition-colors">
+                            Login
+                        </NavLink>
+                    )}
 
                     {/* Mobile Menu Toggle */}
                     <button
@@ -170,10 +178,12 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
                     <div className="h-px bg-border my-2"></div>
 
                     {/* Visual Mobile Notifications Link (Simple version) */}
-                    <div className="flex items-center justify-between" onClick={() => { setNotificationsOpen(!notificationsOpen); setMobileMenuOpen(false); }}>
-                        <span className="text-text-secondary">Notifications</span>
-                        {unreadCount > 0 && <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">{unreadCount}</span>}
-                    </div>
+                    {user && (
+                        <div className="flex items-center justify-between" onClick={() => { setNotificationsOpen(!notificationsOpen); setMobileMenuOpen(false); }}>
+                            <span className="text-text-secondary">Notifications</span>
+                            {unreadCount > 0 && <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">{unreadCount}</span>}
+                        </div>
+                    )}
 
                     <div className="flex items-center justify-between">
                         <span className="text-text-secondary">Theme</span>
@@ -185,24 +195,36 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
                         </button>
                     </div>
 
-                    <div className="flex items-center justify-between">
-                        <span className="text-text-secondary">Profile</span>
-                        <NavLink to="/profile" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded bg-accent flex items-center justify-center font-bold text-white">
-                                {user?.name?.[0]?.toUpperCase() || 'U'}
+                    {user ? (
+                        <>
+                            <div className="flex items-center justify-between">
+                                <span className="text-text-secondary">Profile</span>
+                                <NavLink to="/profile" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2">
+                                    <div className="w-8 h-8 rounded bg-accent flex items-center justify-center font-bold text-white">
+                                        {user?.name?.[0]?.toUpperCase() || 'U'}
+                                    </div>
+                                </NavLink>
                             </div>
-                        </NavLink>
-                    </div>
 
-                    <button
-                        onClick={() => {
-                            handleLogout();
-                            setMobileMenuOpen(false);
-                        }}
-                        className="w-full text-left text-red-500 hover:text-red-400 font-medium py-2"
-                    >
-                        Logout
-                    </button>
+                            <button
+                                onClick={() => {
+                                    handleLogout();
+                                    setMobileMenuOpen(false);
+                                }}
+                                className="w-full text-left text-red-500 hover:text-red-400 font-medium py-2"
+                            >
+                                Logout
+                            </button>
+                        </>
+                    ) : (
+                        <NavLink
+                            to="/login"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="w-full text-left text-accent hover:text-accent-hover font-medium py-2"
+                        >
+                            Login
+                        </NavLink>
+                    )}
                 </div>
             )}
         </nav>

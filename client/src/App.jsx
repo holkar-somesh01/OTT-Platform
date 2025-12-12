@@ -69,13 +69,14 @@ function App() {
         <Route path="/reset-password" element={<PublicOnly><ResetPassword /></PublicOnly>} />
 
         {/* Protected Routes */}
-        <Route path="/" element={<RequireAuth><DashboardLayout /></RequireAuth>}>
+        {/* Main Layout Routes */}
+        <Route path="/" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
-          <Route path="movies" element={<Movies />} />
-          <Route path="users" element={<Users />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="shorts" element={<Shorts />} />
-          <Route path="tv-shows" element={<Series />} />
+          <Route path="movies" element={<RequireAuth><Movies /></RequireAuth>} />
+          <Route path="users" element={<RequireAuth><Users /></RequireAuth>} />
+          <Route path="profile" element={<RequireAuth><Profile /></RequireAuth>} />
+          <Route path="shorts" element={<RequireAuth><Shorts /></RequireAuth>} />
+          <Route path="tv-shows" element={<RequireAuth><Series /></RequireAuth>} />
         </Route>
 
         {/* Admin Routes */}

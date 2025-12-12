@@ -1,0 +1,30 @@
+@theme {
+    --color-primary: var(--bg-primary);
+    --color-secondary: var(--bg-secondary);
+    --color-accent: #E50914;
+    --color-accent-hover: #B20710;
+    --color-primary-text: var(--text-primary);
+    --color-border: var(--border-color);
+    --color-hover: var(--hover-color);
+    --color-text-secondary: var(--text-secondary);
+}
+
+:root {
+    --bg-primary: #141414;
+    --bg-secondary: #181818;
+    --text-primary: #ffffff;
+    --text-secondary: #9ca3af;
+    --border-color: #1f2937;
+    /* gray-800 */
+    --hover-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] {
+    --bg-primary: #f3f4f6;
+    --bg-secondary: #ffffff;
+    --text-primary: #1f2937;
+    --text-secondary: #4b5563;
+    --border-color: #e5e7eb;
+    /* gray-200 */
+    --hover-color: rgba(0, 0, 0, 0.05);
+}
